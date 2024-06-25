@@ -115,7 +115,7 @@ let createNewUser = (data) => {
             if(check===true){
                 resolve({
                     errCode: 1,
-                    message: "Email alrealdy have, please try an other email"
+                    errMessage: "Email alrealdy have, please try an other email"
                 })
             }else{
             
