@@ -168,9 +168,10 @@ let updateUserData = (data) =>{
     return new Promise(async(resolve, reject) => {
         try {
             if(!data.id){
+                console.log('check nodje', data)
                 resolve({
                     errCode: 2,
-                    message: "Missing required parameter"
+                    errMessage: "Missing required parameter"
                 })
             }
             let user = await db.User.findOne({
