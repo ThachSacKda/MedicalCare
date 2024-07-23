@@ -165,35 +165,82 @@ let deleteUser = (userId) => {
     })
 }
 
-let updateUserData = (data) =>{
-    return new Promise(async(resolve, reject) => {
+// let updateUserData = (data) =>{
+//     return new Promise(async(resolve, reject) => {
+//         try {
+//             if(!data.id || !data.roleId || !data.positionId || !data.gender){
+//                 console.log('check nodje', data)
+//                 resolve({
+//                     errCode: 2,
+//                     errMessage: "Missing required parameter"
+//                 })
+//             }
+//             let user = await db.User.findOne({
+//                 where: { id: data.id},
+//                 raw: false
+//             })
+//             if(user){
+//                 user.firstName = data.firstName;
+//                 user.lastName = data.lastName;
+//                 user.address= data.address;
+//                 user.roleId = data.roleId;
+//                 user.positionId = data.positionId;
+//                 user.gender = data.gender;
+//                 user.phonenumber = data.phonenumber;
+                
+//                 await user.save();
+
+//                 resolve({
+//                     errCode: 0,
+//                     message: "Update user successfully"
+//                 })
+//             }else{
+//                 resolve({
+//                     errCode: 1,
+//                     message: "User not found"
+//                 });
+//             }
+//         } catch (e) {
+//             reject(e);
+//         }
+//     })
+// }
+
+let updateUserData = (data) => {
+    return new Promise(async (resolve, reject) => {
         try {
-            if(!data.id){
-                console.log('check nodje', data)
+            console.log('Data received:', data); // Log để kiểm tra dữ liệu đầu vào
+
+            if (!data.id) {
                 resolve({
                     errCode: 2,
-                    errMessage: "Missing required parameter"
-                })
+                    errMessage: "Missing required parameter: id"
+                });
+                return; // Dừng lại nếu không có id
             }
+
             let user = await db.User.findOne({
-                where: { id: data.id},
+                where: { id: data.id },
                 raw: false
-            })
-            if(user){
-                user.firstName = data.firstName;
-                user.lastName = data.lastName;
-                user.address= data.address;
+            });
+
+            if (user) {
+                // Chỉ cập nhật các trường có giá trị không phải undefined hoặc null
+                if (data.firstName !== undefined) user.firstName = data.firstName;
+                if (data.lastName !== undefined) user.lastName = data.lastName;
+                if (data.address !== undefined) user.address = data.address;
+                if (data.roleId !== undefined) user.roleId = data.roleId;
+                if (data.positionId !== undefined) user.positionId = data.positionId;
+                if (data.gender !== undefined) user.gender = data.gender;
+                if (data.phonenumber !== undefined) user.phonenumber = data.phonenumber;
+
                 await user.save();
-                // await db.User.save({
-                //     firstName: data.firstName,
-                //     lastName: data.lastName,
-                //     address: data.address,
-                // })
+
                 resolve({
                     errCode: 0,
                     message: "Update user successfully"
-                })
-            }else{
+                });
+            } else {
                 resolve({
                     errCode: 1,
                     message: "User not found"
@@ -202,8 +249,9 @@ let updateUserData = (data) =>{
         } catch (e) {
             reject(e);
         }
-    })
-}
+    });
+};
+
 
 let getAllCodeService = (typeInput) => {
     return new Promise(async(resolve, reject) => {
