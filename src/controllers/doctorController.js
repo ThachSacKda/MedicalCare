@@ -70,10 +70,25 @@ const bulkCreateSchedule = async (req, res) => {
     }
 };
 
+let getScheduleByDate = async (res, req) => {
+    try {
+        let data = (req.query.doctorId, req.query.date);  // Lấy dữ liệu từ body request
+        let response = await doctorService.getScheduleByDate(data);
+        return res.status(200).json(response);
+    } catch (error) {
+        console.error('Error in bulkCreateSchedule:', error); // Log lỗi chi tiết
+        return res.status(500).json({
+            errCode: -1,
+            errMessage: 'Error from server'
+        });
+    }
+}
+
 module.exports = {
     getDoctorHome: getDoctorHome,
     getAllDoctors: getAllDoctors,
     postInforDoctor: postInforDoctor,
     getDetailDoctorById: getDetailDoctorById,
     bulkCreateSchedule: bulkCreateSchedule,
+    getScheduleByDate: getScheduleByDate,
 };
