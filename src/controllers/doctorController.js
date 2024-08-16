@@ -70,19 +70,21 @@ const bulkCreateSchedule = async (req, res) => {
     }
 };
 
-let getScheduleByDate = async (res, req) => {
+let getScheduleByDate = async (req, res) => {
     try {
-        let data = (req.query.doctorId, req.query.date);  // Lấy dữ liệu từ body request
-        let response = await doctorService.getScheduleByDate(data);
-        return res.status(200).json(response);
-    } catch (error) {
-        console.error('Error in bulkCreateSchedule:', error); // Log lỗi chi tiết
+        console.log('Received query params:', req.query);  // Log kiểm tra
+
+        let infor = await doctorService.getScheduleDoctorByDate(req.query.doctorId, req.query.date);
+        return res.status(200).json(infor);
+    } catch (e) {
+        console.error('Error in getScheduleByDate controller:', e);  // Log lỗi
         return res.status(500).json({
             errCode: -1,
-            errMessage: 'Error from server'
+            errMessage: 'Error from the server'
         });
     }
-}
+};
+
 
 module.exports = {
     getDoctorHome: getDoctorHome,
