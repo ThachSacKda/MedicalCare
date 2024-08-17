@@ -20,12 +20,13 @@ module.exports = (sequelize, DataTypes) => {
     paymentId: DataTypes.STRING,
     addressClinic: DataTypes.STRING,
     nameClinic: DataTypes.STRING,
-    note: DataTypes.INTEGER,
+    note: DataTypes.STRING,
     count: DataTypes.INTEGER
 
   }, {
     sequelize,
     modelName: 'Doctor_infor',
+    freezeTableName: true
   });
   return Doctor_infor;
 };
