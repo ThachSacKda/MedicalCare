@@ -85,6 +85,23 @@ let getScheduleByDate = async (req, res) => {
     }
 };
 
+let getExtraInforDoctorById = async (req, res) => {
+    try {
+        // In ra query params để kiểm tra xem có nhận được đúng `doctorId` không
+        console.log('Received query params:', req.query);
+
+        let infor = await doctorService.getExtraInforDoctorById(req.query.doctorId);
+        return res.status(200).json(infor);
+    } catch (e) {
+        // Ghi lại lỗi để dễ dàng theo dõi
+        console.error('Error in getExtraInforDoctorById controller:', e);
+        return res.status(500).json({
+            errCode: -1,
+            errMessage: 'Error from the server'
+        });
+    }
+};
+
 
 module.exports = {
     getDoctorHome: getDoctorHome,
@@ -93,4 +110,5 @@ module.exports = {
     getDetailDoctorById: getDetailDoctorById,
     bulkCreateSchedule: bulkCreateSchedule,
     getScheduleByDate: getScheduleByDate,
+    getExtraInforDoctorById: getExtraInforDoctorById,
 };
