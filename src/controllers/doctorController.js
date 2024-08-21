@@ -102,6 +102,20 @@ let getExtraInforDoctorById = async (req, res) => {
     }
 };
 
+let getProfileDoctorById = async (req, res) => {
+    try {
+        console.log('Received query params:', req.query);
+
+        let infor = await doctorService.getProfileDoctorById(req.query.doctorId);
+        return res.status(200).json(infor);
+    } catch (e) {
+        console.error('Error in getExtraInforDoctorById controller:', e);
+        return res.status(500).json({
+            errCode: -1,
+            errMessage: 'Error from the server'
+        });
+    }
+};
 
 module.exports = {
     getDoctorHome: getDoctorHome,
@@ -111,4 +125,5 @@ module.exports = {
     bulkCreateSchedule: bulkCreateSchedule,
     getScheduleByDate: getScheduleByDate,
     getExtraInforDoctorById: getExtraInforDoctorById,
+    getProfileDoctorById: getProfileDoctorById,
 };
