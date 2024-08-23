@@ -1,17 +1,29 @@
 import db from "../models/index";
 require('dotenv').config();
-const { reject } = require("lodash")
+import emailService from './emailService';
 
 let postBookAppoinment = (data) => {
     return new Promise(async(resolve, reject) => {
         try {
-            if(!data.email || !data.doctorId || !data.timeType || !data.date) {
+            // Kiểm tra các tham số bắt buộc
+            if (!data.email || !data.doctorId || !data.timeType || !data.date) {
                 resolve({
                     errCode: 1,
-                    errMessage: 'Missing parameter'
+                    errMessage: 'Thiếu thông tin bắt buộc'
+                });
+            } else {
+                // Gửi email đơn giản sau khi nhận được dữ liệu
+                await emailService.sendSimpleEmail({
+                    receiverEmail: data.email,
+                    patientName: "Sac Kda",
+                    time: '8:00-9:00',
+                    doctorName: "Neymar",
+                    redirectLink: 'https://www.facebook.com/'
+
                 })
-            }else{
-                 let user = await db.User.findOrCreate({
+
+                // Tạo người dùng hoặc tìm người dùng đã tồn tại
+                let user = await db.User.findOrCreate({
                     where: {email: data.email},
                     defaults: {
                         email: data.email,
@@ -19,8 +31,7 @@ let postBookAppoinment = (data) => {
                     },
                 });
 
-                //create a booking record
-                if(user && user[0]){
+                if (user && user[0]) {
                     await db.Booking.findOrCreate({
                         where: {patientId: user[0].id},
                         defaults: {
@@ -30,23 +41,21 @@ let postBookAppoinment = (data) => {
                             date: data.date,
                             timeType: data.timeType
                         }
-                        
-                    })
+                    });
                 }
 
                 resolve({
                     data: user,
                     errCode: 0,
-                    errMessage: 'Save infor doctor successfully!'
-                })
+                    errMessage: 'Đã lưu thông tin bác sĩ thành công!'
+                });
             }
-            
         } catch (e) {
             reject(e);
         }
-    })
+    });
 }
 
 module.exports = {
     postBookAppoinment: postBookAppoinment
-}
+};
