@@ -262,12 +262,12 @@ let getScheduleDoctorByDate = (doctorId, date) => {
 
                 let dataSchedule = await db.Schedule.findAll({
                     where: {
-                        doctorId: doctorId,
+                        doctorId: doctorId,  // Ensure this is correct
                         date: date  // Chú ý định dạng của 'date'
                     },
                     include: [
                         { model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi'] },
-
+                        { model: db.User, as: 'doctorData', attributes: ['firstName', 'lastName'] },  // Ensure 'doctorData' is consistent
                     ],
                     raw: false,
                     nest: true
@@ -287,7 +287,8 @@ let getScheduleDoctorByDate = (doctorId, date) => {
             reject(e);
         }
     });
-}
+};
+
 
 let getExtraInforDoctorById = (doctorId) => {
     return new Promise(async (resolve, reject) => {

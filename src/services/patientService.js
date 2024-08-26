@@ -6,18 +6,19 @@ let postBookAppoinment = (data) => {
     return new Promise(async(resolve, reject) => {
         try {
             // Kiểm tra các tham số bắt buộc
-            if (!data.email || !data.doctorId || !data.timeType || !data.date) {
+            if (!data.email || !data.doctorId || !data.timeType || !data.date || !data.fullName) {
                 resolve({
                     errCode: 1,
-                    errMessage: 'Thiếu thông tin bắt buộc'
+                    errMessage: 'Missing parameter'
                 });
             } else {
                 // Gửi email đơn giản sau khi nhận được dữ liệu
                 await emailService.sendSimpleEmail({
                     receiverEmail: data.email,
-                    patientName: "Sac Kda",
-                    time: '8:00-9:00',
-                    doctorName: "Neymar",
+                    patientName: data.fullName,
+                    time: data.timeString,
+                    doctorName: data.doctorName,
+                    language: data.language,
                     redirectLink: 'https://www.facebook.com/'
 
                 })
