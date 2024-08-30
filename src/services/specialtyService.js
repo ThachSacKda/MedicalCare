@@ -13,7 +13,7 @@ let createSpecialty = (data) => {
                     name: data.name,
                     image: data.imageBase64,
                     descriptionHTML: data.descriptionHTML,
-                    descriptionMarkdown: data.descriptionMarkdown // Đã sửa lỗi ở đây
+                    descriptionMarkdown: data.descriptionMarkdown
                 });
 
                 resolve({
@@ -27,6 +27,31 @@ let createSpecialty = (data) => {
     });
 };
 
+let getAllSpecialty = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let data = await db.Specialty.findAll({
+                
+            });
+            if (data && data.length > 0) {
+                data = data.map(item => {
+                    item.image = new Buffer(item.image, 'base64').toString('binary');
+                    return item;
+                });
+            }
+            
+            resolve({
+                errMessage: 'ok',
+                errCode: 0,
+                data
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 module.exports = {
-    createSpecialty: createSpecialty
+    createSpecialty: createSpecialty,
+    getAllSpecialty: getAllSpecialty
 };

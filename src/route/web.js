@@ -1,8 +1,8 @@
-import  express  from "express";
+import express from "express";
 import homeController from "../controllers/homeController";
 import userController from "../controllers/userController";
 import doctorController from "../controllers/doctorController";
-import patientController from "../controllers/patientController"
+import patientController from "../controllers/patientController";
 import specialtyController from "../controllers/specialtyController";
 
 let router = express.Router();
@@ -10,9 +10,6 @@ let router = express.Router();
 let initWebRoutes = (app) => {
     router.get('/', homeController.getHomePage);
     router.get('/about', homeController.getAboutPage);
-    // router.get('/kda', (req, res)=> {
-    //     return res.send("Kda depzai")
-    // });
     router.get('/crud', homeController.getCRUD);
 
     router.post('/post-crud', homeController.postCRUD);
@@ -20,7 +17,6 @@ let initWebRoutes = (app) => {
     router.get('/edit-crud', homeController.getEditCRUD);
     router.post('/put-crud', homeController.putCRUD);
     router.get('/delete-crud', homeController.deleteCRUD);
-
 
     router.post('/api/login', userController.handleLogin);
     router.get('/api/get-all-user', userController.handleGetAllUsers);
@@ -30,7 +26,7 @@ let initWebRoutes = (app) => {
 
     router.get('/api/allcode', userController.getAllCode);
     router.get('/api/top-doctor-home', doctorController.getDoctorHome);
-    router.get('/api/get-all-doctor', doctorController.getDoctorHome);
+    router.get('/api/get-all-doctor', doctorController.getAllDoctors);
     router.post('/api/save-infor-doctors', doctorController.postInforDoctor);
     router.get('/api/get-detail-doctor-by-id', doctorController.getDetailDoctorById);
 
@@ -43,10 +39,10 @@ let initWebRoutes = (app) => {
     router.post('/api/verify-book-appointment', patientController.postVerifyBookAppoinment);
     router.post('/api/create-new-specialty', specialtyController.createSpecialty);
 
-
+    // Đường dẫn cần kiểm tra trên Postman
+    router.get('/api/get-specialty', specialtyController.getAllSpecialty);
 
     return app.use("/", router);
 }
-
 
 module.exports = initWebRoutes;
