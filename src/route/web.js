@@ -39,8 +39,9 @@ let initWebRoutes = (app) => {
     router.post('/api/verify-book-appointment', patientController.postVerifyBookAppoinment);
     router.post('/api/create-new-specialty', specialtyController.createSpecialty);
 
-    // Đường dẫn cần kiểm tra trên Postman
     router.get('/api/get-specialty', specialtyController.getAllSpecialty);
+    router.get('/api/get-detail-specialty-by-id', specialtyController.getDetailSpecialtyById);
+
 
     return app.use("/", router);
 }
