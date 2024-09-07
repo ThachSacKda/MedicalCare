@@ -9,15 +9,6 @@ import cors from 'cors';
 
 
 let app = express();
-
-// Use CORS middleware
-// app.use(cors({
-//     origin: process.env.URL_REACT,
-//     credentials: true
-// }));
-
-
-// Add headers before the routes are defined
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
@@ -38,11 +29,6 @@ app.use(function (req, res, next) {
 });
 
 
-// app.use(cors({ credentials: true, origin: true }));
-//config app
-
-// app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
