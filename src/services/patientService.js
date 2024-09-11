@@ -14,7 +14,7 @@ let postBookAppoinment = (data) => {
     return new Promise(async(resolve, reject) => {
         try {
             // Kiểm tra các tham số bắt buộc
-            if (!data.email || !data.doctorId || !data.timeType || !data.date || !data.fullName) {
+            if (!data.email || !data.doctorId || !data.timeType ) {
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing parameter'
@@ -38,7 +38,10 @@ let postBookAppoinment = (data) => {
                     where: {email: data.email},
                     defaults: {
                         email: data.email,
-                        roleId: 'R3'
+                        roleId: 'R3',
+                        address: data.address,
+                        gender: data.selectedGender,
+                        firstName: data.fullName
                     },
                 });
 
