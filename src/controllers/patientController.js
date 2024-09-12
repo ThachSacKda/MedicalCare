@@ -29,8 +29,24 @@ let postVerifyBookAppoinment = async (req, res) => {
     }
 }
 
+let getProfilePatientById = async (req, res) => {
+    try {
+        console.log('Received query params:', req.query);
+
+        let infor = await patientService.getProfilePatientById(req.query.patientId);
+        return res.status(200).json(infor);
+    } catch (e) {
+        console.error('Error in getExtraInforDoctorById controller:', e);
+        return res.status(500).json({
+            errCode: -1,
+            errMessage: 'Error from the server'
+        });
+    }
+};
+
 
 module.exports = {
     postBookAppoinment: postBookAppoinment,
-    postVerifyBookAppoinment: postVerifyBookAppoinment
+    postVerifyBookAppoinment: postVerifyBookAppoinment,
+    getProfilePatientById: getProfilePatientById
 }

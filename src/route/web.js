@@ -62,7 +62,7 @@ let initWebRoutes = (app) => {
     // router.get('/api/get-specialty', specialtyController.getAllSpecialty);
     // router.get('/api/get-detail-specialty-by-id', specialtyController.getDetailSpecialtyById);
 
-
+    router.get('/api/get-detail-patient-by-id', patientController.getProfilePatientById);
 
     return app.use("/", router);
 }

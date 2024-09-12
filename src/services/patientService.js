@@ -113,7 +113,54 @@ let postVerifyBookAppoinment = (data) => {
     });
 }
 
+let getProfilePatientById = (patientId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!patientId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                });
+            } else {
+                let data = await db.User.findOne({
+                    where: {
+                        id: patientId
+                    },
+                    attributes: {
+                        exclude: ['password']
+                    },
+                    include: [
+                        {
+                            model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi']
+                        },
+                      
+                    ],
+                    raw: false,
+                    nest: true
+                });
+
+                if (data && data.image) {
+                    data.image = new Buffer(data.image, 'base64').toString('binary');
+                }
+
+                if (!data) data = {};
+
+                resolve({
+                    errCode: 0,
+                    data: data
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+
+
+
 module.exports = {
     postBookAppoinment: postBookAppoinment,
-    postVerifyBookAppoinment: postVerifyBookAppoinment
+    postVerifyBookAppoinment: postVerifyBookAppoinment,
+    getProfilePatientById: getProfilePatientById
 };
