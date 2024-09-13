@@ -45,8 +45,38 @@ let getProfilePatientById = async (req, res) => {
 };
 
 
+let addMedicalRecord = async (req, res) => {
+    try {
+        let info = await patientService.addMedicalRecord(req.body);
+        return res.status(200).json(info);
+    } catch (e) {
+        console.error('Error in addMedicalRecord controller:', e);
+        return res.status(500).json({
+            errCode: -1,
+            errMessage: 'Error from the server',
+        });
+    }
+};
+
+let getMedicalRecordsByPatientId = async (req, res) => {
+    try {
+        let records = await patientService.getMedicalRecordsByPatientId(req.query.patientId);
+        return res.status(200).json(records);
+    } catch (e) {
+        console.error('Error in getMedicalRecordsByPatientId controller:', e);
+        return res.status(500).json({
+            errCode: -1,
+            errMessage: 'Error from the server',
+        });
+    }
+};
+
+
+
 module.exports = {
     postBookAppoinment: postBookAppoinment,
     postVerifyBookAppoinment: postVerifyBookAppoinment,
-    getProfilePatientById: getProfilePatientById
+    getProfilePatientById: getProfilePatientById,
+    addMedicalRecord: addMedicalRecord,
+    getMedicalRecordsByPatientId: getMedicalRecordsByPatientId,
 }

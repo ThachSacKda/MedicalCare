@@ -30,7 +30,6 @@ let createNewMedicine = async (data) => {
     });
 };
 
-// Get all medicines
 let getAllMedicines = () => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -38,7 +37,7 @@ let getAllMedicines = () => {
             resolve({
                 errCode: 0,
                 errMessage: 'OK',
-                data: medicines
+                data: medicines  // Make sure 'data' contains the medicines list
             });
         } catch (error) {
             reject({
@@ -48,6 +47,12 @@ let getAllMedicines = () => {
         }
     });
 };
+
+module.exports = {
+    getAllMedicines,
+};
+
+
 
 let updateMedicine = async (data) => {
     return new Promise(async (resolve, reject) => {

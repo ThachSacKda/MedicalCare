@@ -15,19 +15,20 @@ let createNewMedicine = async (req, res) => {
     }
 };
 
-// Get all medicines
 let getAllMedicines = async (req, res) => {
     try {
         let response = await pharmacyService.getAllMedicines();
-        return res.status(200).json(response);
+        return res.status(200).json(response);  // Send the response back to the frontend
     } catch (error) {
         console.error('Error in getAllMedicines controller:', error);
         return res.status(500).json({
             errCode: -1,
-            errMessage: 'Error from the server'
+            errMessage: 'Error from the server',
         });
     }
 };
+
+
 
 // Update a medicine in pharmacyController.js
 let updateMedicine = async (req, res) => {

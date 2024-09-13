@@ -156,11 +156,69 @@ let getProfilePatientById = (patientId) => {
     });
 };
 
+let addMedicalRecord = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.diagnosis || !data.medicines || !data.userId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameters',
+                });
+            } else {
+                await db.MedicalRecord.create({
+                    diagnosis: data.diagnosis,
+                    medicines: JSON.stringify(data.medicines), // Save selected medicines as a JSON array
+                    note: data.note,
+                    userId: data.userId,  // Associate the record with the patient
+                });
 
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Medical record added successfully!',
+                });
+            }
+        } catch (e) {
+            reject({
+                errCode: -1,
+                errMessage: 'Error from the server',
+            });
+        }
+    });
+};
+
+
+
+
+let getMedicalRecordsByPatientId = (patientId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!patientId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter',
+                });
+            } else {
+                let records = await db.MedicalRecord.findAll({
+                    where: { userId: patientId },
+                    raw: true,
+                });
+
+                resolve({
+                    errCode: 0,
+                    data: records,
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 
 
 module.exports = {
     postBookAppoinment: postBookAppoinment,
     postVerifyBookAppoinment: postVerifyBookAppoinment,
-    getProfilePatientById: getProfilePatientById
+    getProfilePatientById: getProfilePatientById,
+    addMedicalRecord: addMedicalRecord,
+    getMedicalRecordsByPatientId: getMedicalRecordsByPatientId
 };
