@@ -58,19 +58,6 @@ let addMedicalRecord = async (req, res) => {
     }
 };
 
-let getMedicalRecordsByPatientId = async (req, res) => {
-    try {
-        let records = await patientService.getMedicalRecordsByPatientId(req.query.patientId);
-        return res.status(200).json(records);
-    } catch (e) {
-        console.error('Error in getMedicalRecordsByPatientId controller:', e);
-        return res.status(500).json({
-            errCode: -1,
-            errMessage: 'Error from the server',
-        });
-    }
-};
-
 
 
 module.exports = {
@@ -78,5 +65,4 @@ module.exports = {
     postVerifyBookAppoinment: postVerifyBookAppoinment,
     getProfilePatientById: getProfilePatientById,
     addMedicalRecord: addMedicalRecord,
-    getMedicalRecordsByPatientId: getMedicalRecordsByPatientId,
 }

@@ -188,37 +188,9 @@ let addMedicalRecord = (data) => {
 
 
 
-
-let getMedicalRecordsByPatientId = (patientId) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            if (!patientId) {
-                resolve({
-                    errCode: 1,
-                    errMessage: 'Missing required parameter',
-                });
-            } else {
-                let records = await db.MedicalRecord.findAll({
-                    where: { userId: patientId },
-                    raw: true,
-                });
-
-                resolve({
-                    errCode: 0,
-                    data: records,
-                });
-            }
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
-
-
 module.exports = {
     postBookAppoinment: postBookAppoinment,
     postVerifyBookAppoinment: postVerifyBookAppoinment,
     getProfilePatientById: getProfilePatientById,
     addMedicalRecord: addMedicalRecord,
-    getMedicalRecordsByPatientId: getMedicalRecordsByPatientId
 };

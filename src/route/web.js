@@ -66,7 +66,6 @@ let initWebRoutes = (app) => {
 
 
     router.post('/api/add-medical-record', patientController.addMedicalRecord);
-    router.get('/api/get-medical-records', patientController.getMedicalRecordsByPatientId);
 
     return app.use("/", router);
 }
