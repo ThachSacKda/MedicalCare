@@ -187,10 +187,51 @@ let addMedicalRecord = (data) => {
 };
 
 
+let getMedicalRecordsByPatientId = (patientId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!patientId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter',
+                });
+            } else {
+                // Query to fetch medical records with patient's details
+                let medicalRecords = await db.MedicalRecord.findAll({
+                    where: { userId: patientId },
+                    include: [
+                        {
+                            model: db.User,
+                            as: 'patient',
+                            attributes: ['firstName', 'lastName'], // Include patient name
+                        },
+                    ],
+                    raw: true,
+                    nest: true, // Ensures nested objects structure is returned
+                });
+
+                resolve({
+                    errCode: 0,
+                    data: medicalRecords,
+                });
+            }
+        } catch (error) {
+            reject({
+                errCode: -1,
+                errMessage: 'Error from the server',
+            });
+        }
+    });
+};
+
+
+
+
 
 module.exports = {
     postBookAppoinment: postBookAppoinment,
     postVerifyBookAppoinment: postVerifyBookAppoinment,
     getProfilePatientById: getProfilePatientById,
     addMedicalRecord: addMedicalRecord,
+    getMedicalRecordsByPatientId: getMedicalRecordsByPatientId
 };
