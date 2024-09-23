@@ -225,6 +225,52 @@ let getMedicalRecordsByPatientId = (patientId) => {
 };
 
 
+let handleGetPatientProfile = async (patientId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!patientId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter: patientId',
+                });
+            } else {
+                let patientInfo = await db.User.findOne({
+                    where: { id: patientId },
+                    include: [
+                        {
+                            model: db.MedicalRecord,  // Kết hợp với bảng MedicalRecord để lấy thông tin hồ sơ bệnh án
+                            as: 'medicalRecords'
+                        }
+                    ],
+                    raw: false, // raw: false để đảm bảo có thể lấy quan hệ giữa các bảng
+                    nest: true // nest: true để lấy được dữ liệu lồng nhau
+                });
+
+                if (!patientInfo) {
+                    resolve({
+                        errCode: 1,
+                        errMessage: 'Patient not found',
+                    });
+                } else {
+                    resolve({
+                        errCode: 0,
+                        data: {
+                            patientInfo,
+                            medicalRecords: patientInfo.medicalRecords,
+                        }
+                    });
+                }
+            }
+        } catch (error) {
+            reject({
+                errCode: -1,
+                errMessage: 'Error from the server',
+                error
+            });
+        }
+    });
+};
+
 
 
 
@@ -233,5 +279,6 @@ module.exports = {
     postVerifyBookAppoinment: postVerifyBookAppoinment,
     getProfilePatientById: getProfilePatientById,
     addMedicalRecord: addMedicalRecord,
-    getMedicalRecordsByPatientId: getMedicalRecordsByPatientId
+    getMedicalRecordsByPatientId: getMedicalRecordsByPatientId,
+    handleGetPatientProfile: handleGetPatientProfile
 };

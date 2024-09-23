@@ -69,6 +69,8 @@ let initWebRoutes = (app) => {
 
     router.get('/api/medical-records/:patientId', patientController.getMedicalRecordsByPatientId);
 
+    router.get('/api/patient-profile/:patientId', patientController.handleGetPatientProfile);
+
     return app.use("/", router);
 }
 

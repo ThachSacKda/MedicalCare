@@ -73,6 +73,28 @@ let getMedicalRecordsByPatientId = async (req, res) => {
 };
 
 
+let handleGetPatientProfile = async (req, res) => {
+    try {
+        let patientId = req.params.patientId;  // Lấy patientId từ URL params
+        if (!patientId) {
+            return res.status(400).json({
+                errCode: 1,
+                errMessage: 'Missing required parameter: patientId',
+            });
+        }
+
+        let result = await patientService.handleGetPatientProfile(patientId);  // Gọi service để xử lý
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(500).json({
+            errCode: -1,
+            errMessage: 'Error from the server',
+            error: error.message,
+        });
+    }
+};
+
+
 
 
 module.exports = {
@@ -80,5 +102,6 @@ module.exports = {
     postVerifyBookAppoinment: postVerifyBookAppoinment,
     getProfilePatientById: getProfilePatientById,
     addMedicalRecord: addMedicalRecord,
-    getMedicalRecordsByPatientId: getMedicalRecordsByPatientId
+    getMedicalRecordsByPatientId: getMedicalRecordsByPatientId,
+    handleGetPatientProfile: handleGetPatientProfile
 }

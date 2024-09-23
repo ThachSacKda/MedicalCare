@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId', // Linking to the MedicalRecord model
         as: 'medicalRecords'
       });
+      
     }
   }
 
