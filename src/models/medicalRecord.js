@@ -14,20 +14,21 @@ module.exports = (sequelize, DataTypes) => {
 
   MedicalRecord.init({
     diagnosis: DataTypes.TEXT,
-    medicines: DataTypes.JSON,
+    medicines: DataTypes.STRING,  // Cập nhật kiểu dữ liệu thành STRING để lưu tên thuốc
     note: DataTypes.TEXT,
     userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Users', // This should match the table name for users
-        key: 'id'
-      },
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'Users', 
+            key: 'id'
+        },
     }
-  }, {
+}, {
     sequelize,
     modelName: 'MedicalRecord',
-  });
+});
+
 
   return MedicalRecord;
 };
