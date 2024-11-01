@@ -74,6 +74,9 @@ let initWebRoutes = (app) => {
     router.get('/api/get-all-patients', patientController.getAllPatients);  // Lấy danh sách bệnh nhân
 
     router.get('/api/admin/dashboard/appointments', dashboardController.getAppointmentStatistics);
+    router.get('/api/admin/dashboard/weekly-appointments', dashboardController.getWeeklyBookingStatistics);
+    
+
     return app.use("/", router);
 }
 
