@@ -271,6 +271,74 @@ let handleGetPatientProfile = async (patientId) => {
     });
 };
 
+let getAllPatients = async (patientId) => {
+    try {
+        let patients = '';
+        
+        if (patientId === 'All') {
+            // Lấy tất cả các bệnh nhân
+            patients = await db.User.findAll({
+                where: { roleId: 'R3' },  // Chỉ lấy các bệnh nhân có roleId là 'R3'
+                include: [
+                    {
+                        model: db.Allcode,
+                        as: 'genderData', 
+                        attributes: ['valueVi', 'valueEn']
+                    },
+                    {
+                        model: db.Allcode,
+                        as: 'positionData',
+                        attributes: ['valueVi', 'valueEn']
+                    }
+                ],
+                attributes: ['id', 'firstName', 'lastName', 'roleId', 'positionId', 'address', 'phonenumber', 'email'],
+            });
+        } else {
+            // Lấy bệnh nhân cụ thể theo ID
+            patients = await db.User.findOne({
+                where: { id: patientId, roleId: 'R3' },  // Lấy bệnh nhân có ID cụ thể và roleId là 'R3'
+                include: [
+                    {
+                        model: db.Allcode,
+                        as: 'genderData',
+                        attributes: ['valueVi', 'valueEn']
+                    },
+                    {
+                        model: db.Allcode,
+                        as: 'positionData',
+                        attributes: ['valueVi', 'valueEn']
+                    }
+                ],
+                attributes: ['id', 'firstName', 'lastName', 'roleId', 'positionId', 'address', 'phonenumber', 'email'],
+            });
+        }
+
+        if (!patients) {
+            return {
+                errCode: 2,
+                message: 'No patient found'
+            };
+        }
+
+        return {
+            errCode: 0,
+            message: 'OK',
+            data: patients
+        };
+
+    } catch (error) {
+        console.error("Error in patientService:", error); // Log lỗi ra console
+        return {
+            errCode: 1,
+            message: 'Error fetching patient data'
+        };
+    }
+};
+
+
+
+
+
 
 
 
@@ -280,5 +348,6 @@ module.exports = {
     getProfilePatientById: getProfilePatientById,
     addMedicalRecord: addMedicalRecord,
     getMedicalRecordsByPatientId: getMedicalRecordsByPatientId,
-    handleGetPatientProfile: handleGetPatientProfile
+    handleGetPatientProfile: handleGetPatientProfile,
+    getAllPatients: getAllPatients
 };

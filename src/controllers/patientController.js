@@ -95,6 +95,26 @@ let handleGetPatientProfile = async (req, res) => {
 };
 
 
+let getAllPatients = async (req, res) => {
+    try {
+        let patientId = req.query.id;
+        
+        let response = await patientService.getAllPatients(patientId);  // Gọi đến service
+        return res.status(200).json(response);  // Trả về kết quả nếu thành công
+    } catch (error) {
+        console.error("Error in getAllPatients Controller:", error); // Log lỗi ra console
+        return res.status(500).json({
+            errCode: 1,
+            message: "Error fetching patient data"  // Trả về lỗi nếu có vấn đề
+        });
+    }
+};
+
+
+
+
+
+
 
 
 module.exports = {
@@ -103,5 +123,6 @@ module.exports = {
     getProfilePatientById: getProfilePatientById,
     addMedicalRecord: addMedicalRecord,
     getMedicalRecordsByPatientId: getMedicalRecordsByPatientId,
-    handleGetPatientProfile: handleGetPatientProfile
+    handleGetPatientProfile: handleGetPatientProfile,
+    getAllPatients: getAllPatients
 }

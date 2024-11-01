@@ -18,11 +18,12 @@
     "dotenv-extended": "^2.9.0",
     "ejs": "^3.1.5",
     "expess": "^0.0.1-security",
-    "express": "^4.17.1",
+    "express": "^4.21.0",
     "lodash": "^4.17.21",
     "mysql2": "^2.3.3",
     "nodemailer": "6.6.3",
     "sequelize": "^6.37.3",
+    "socket.io": "^4.8.0",
     "uuid": "8.3.2"
   },
   "devDependencies": {
