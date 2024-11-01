@@ -335,7 +335,48 @@ let getAllPatients = async (patientId) => {
     }
 };
 
+let getBookingHistoryByPatientId = (patientId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!patientId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter: patientId',
+                });
+            } else {
+                let bookings = await db.Booking.findAll({
+                    where: { patientId: patientId },
+                    include: [
+                        {
+                            model: db.User,
+                            as: 'patientData',
+                            attributes: ['firstName', 'lastName', 'email', 'address'], // Các thuộc tính của bệnh nhân
+                        },
+                        {
+                            model: db.Allcode,
+                            as: 'timeTypeDataPatient',
+                            attributes: ['valueEn', 'valueVi'] // Thuộc tính của timeType
+                        }
+                    ],
+                    attributes: ['date', 'statusId', 'timeType'], // Các thuộc tính của Booking
+                    raw: true,
+                    nest: true
+                });
 
+                resolve({
+                    errCode: 0,
+                    data: bookings
+                });
+            }
+        } catch (error) {
+            reject({
+                errCode: -1,
+                errMessage: 'Error from the server',
+                error: error.message
+            });
+        }
+    });
+};
 
 
 
@@ -349,5 +390,6 @@ module.exports = {
     addMedicalRecord: addMedicalRecord,
     getMedicalRecordsByPatientId: getMedicalRecordsByPatientId,
     handleGetPatientProfile: handleGetPatientProfile,
-    getAllPatients: getAllPatients
+    getAllPatients: getAllPatients,
+    getBookingHistoryByPatientId: getBookingHistoryByPatientId
 };

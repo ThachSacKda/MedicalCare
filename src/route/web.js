@@ -75,7 +75,8 @@ let initWebRoutes = (app) => {
 
     router.get('/api/admin/dashboard/appointments', dashboardController.getAppointmentStatistics);
     router.get('/api/admin/dashboard/weekly-appointments', dashboardController.getWeeklyBookingStatistics);
-    
+
+    router.get('/api/patient/booking-history', patientController.getBookingHistoryByPatientId);    
 
     return app.use("/", router);
 }

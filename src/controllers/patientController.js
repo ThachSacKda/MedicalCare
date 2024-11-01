@@ -110,6 +110,20 @@ let getAllPatients = async (req, res) => {
     }
 };
 
+let getBookingHistoryByPatientId = async (req, res) => {
+    try {
+        let patientId = req.query.patientId; // Lấy patientId từ query params
+        let result = await patientService.getBookingHistoryByPatientId(patientId);
+        return res.status(200).json(result);
+    } catch (error) {
+        console.error('Error in getBookingHistoryByPatientId controller:', error);
+        return res.status(500).json({
+            errCode: -1,
+            errMessage: 'Error from the server',
+            error: error.message
+        });
+    }
+};
 
 
 
@@ -124,5 +138,6 @@ module.exports = {
     addMedicalRecord: addMedicalRecord,
     getMedicalRecordsByPatientId: getMedicalRecordsByPatientId,
     handleGetPatientProfile: handleGetPatientProfile,
-    getAllPatients: getAllPatients
+    getAllPatients: getAllPatients,
+    getBookingHistoryByPatientId: getBookingHistoryByPatientId
 }
