@@ -391,5 +391,6 @@ module.exports = {
     getMedicalRecordsByPatientId: getMedicalRecordsByPatientId,
     handleGetPatientProfile: handleGetPatientProfile,
     getAllPatients: getAllPatients,
-    getBookingHistoryByPatientId: getBookingHistoryByPatientId
+    getBookingHistoryByPatientId: getBookingHistoryByPatientId,
+
 };

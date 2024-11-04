@@ -78,6 +78,8 @@ let initWebRoutes = (app) => {
 
     router.get('/api/patient/booking-history', patientController.getBookingHistoryByPatientId);    
 
+
+
     return app.use("/", router);
 }
 

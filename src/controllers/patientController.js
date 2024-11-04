@@ -131,6 +131,7 @@ let getBookingHistoryByPatientId = async (req, res) => {
 
 
 
+
 module.exports = {
     postBookAppoinment: postBookAppoinment,
     postVerifyBookAppoinment: postVerifyBookAppoinment,
@@ -139,5 +140,6 @@ module.exports = {
     getMedicalRecordsByPatientId: getMedicalRecordsByPatientId,
     handleGetPatientProfile: handleGetPatientProfile,
     getAllPatients: getAllPatients,
-    getBookingHistoryByPatientId: getBookingHistoryByPatientId
+    getBookingHistoryByPatientId: getBookingHistoryByPatientId,
+ 
 }
