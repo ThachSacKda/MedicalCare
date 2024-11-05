@@ -78,6 +78,7 @@ let initWebRoutes = (app) => {
 
     router.get('/api/patient/booking-history', patientController.getBookingHistoryByPatientId);    
 
+    router.delete('/api/patient/booking', patientController.deleteBooking);
 
 
     return app.use("/", router);

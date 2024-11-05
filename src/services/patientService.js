@@ -358,7 +358,7 @@ let getBookingHistoryByPatientId = (patientId) => {
                             attributes: ['valueEn', 'valueVi'] // Thuộc tính của timeType
                         }
                     ],
-                    attributes: ['date', 'statusId', 'timeType'], // Các thuộc tính của Booking
+                    attributes: ['id','date', 'statusId', 'timeType'], // Các thuộc tính của Booking
                     raw: true,
                     nest: true
                 });
@@ -378,6 +378,44 @@ let getBookingHistoryByPatientId = (patientId) => {
     });
 };
 
+let deleteBookingById = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Tìm booking theo ID
+            let foundBooking = await db.Booking.findOne({
+                where: { id: id }
+            });
+
+            if (!foundBooking) {
+                // Nếu không tìm thấy booking, trả về mã lỗi
+                resolve({
+                    errCode: 2,
+                    errMessage: "Booking does not exist"
+                });
+                return;
+            }
+
+            // Xóa booking
+            await db.Booking.destroy({
+                where: { id: id }
+            });
+
+            // Trả về thành công
+            resolve({
+                errCode: 0,
+                message: "Booking deleted successfully"
+            });
+        } catch (error) {
+            // Bắt lỗi trong quá trình xóa
+            reject({
+                errCode: -1,
+                errMessage: "Error from the server"
+            });
+        }
+    });
+};
+
+
 
 
 
@@ -392,5 +430,6 @@ module.exports = {
     handleGetPatientProfile: handleGetPatientProfile,
     getAllPatients: getAllPatients,
     getBookingHistoryByPatientId: getBookingHistoryByPatientId,
+    deleteBookingById: deleteBookingById
 
 };

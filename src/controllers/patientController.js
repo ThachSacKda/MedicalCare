@@ -1,4 +1,6 @@
 import patientService from '../services/patientService'
+const db = require('../models'); // hoặc đường dẫn đến nơi bạn khai báo các model
+
 
 let postBookAppoinment = async (req, res) => {
     try {
@@ -126,6 +128,33 @@ let getBookingHistoryByPatientId = async (req, res) => {
 };
 
 
+let deleteBooking = async (req, res) => {
+    const bookingId = req.body.bookingId; // Lấy bookingId từ body
+    if (!bookingId) {
+        return res.status(400).json({
+            errCode: 1,
+            errMessage: "Missing required parameter: bookingId"
+        });
+    }
+
+    try {
+        // Gọi service để xóa booking
+        let message = await patientService.deleteBookingById(bookingId);
+        return res.status(200).json({
+            errCode: 0,
+            errMessage: "Booking deleted successfully",
+            data: message // Có thể thêm thông tin trả về
+        });
+    } catch (error) {
+        console.error("Error in deleteBooking controller:", error);
+        return res.status(500).json({
+            errCode: -1,
+            errMessage: "Error from the server"
+        });
+    }
+};
+
+
 
 
 
@@ -141,5 +170,6 @@ module.exports = {
     handleGetPatientProfile: handleGetPatientProfile,
     getAllPatients: getAllPatients,
     getBookingHistoryByPatientId: getBookingHistoryByPatientId,
+    deleteBooking: deleteBooking
  
 }
