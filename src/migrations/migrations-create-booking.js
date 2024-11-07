@@ -7,35 +7,41 @@ module.exports = {
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.INTEGER
-          },
-          statusId: {
+        },
+        statusId: {
             type: Sequelize.STRING
-          },
-          doctorId: {
+        },
+        doctorId: {
             type: Sequelize.INTEGER
-          },
-          patientId: {
+        },
+        patientId: {
             type: Sequelize.INTEGER
-          },
-          date: {
+        },
+        date: {
             type: Sequelize.STRING
-          },
-          timeType: {
+        },
+        timeType: {
             type: Sequelize.STRING
-          },
-          token: {
+        },
+        token: {
             type: Sequelize.STRING
-          },
-          createdAt: {
+        },
+        isBooked: { // Thêm trường isBooked vào migration
+            type: Sequelize.BOOLEAN,
+            defaultValue: false,
+            allowNull: false,
+        },
+        createdAt: {
             allowNull: false,
             type: Sequelize.DATE
-          },
-          updatedAt: {
+        },
+        updatedAt: {
             allowNull: false,
             type: Sequelize.DATE
-          }
+        }
     });
   },
+  
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('bookings');
   }

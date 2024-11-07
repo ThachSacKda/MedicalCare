@@ -4,17 +4,16 @@ const db = require('../models'); // hoặc đường dẫn đến nơi bạn kha
 
 let postBookAppoinment = async (req, res) => {
     try {
-
         let infor = await patientService.postBookAppoinment(req.body);
         return res.status(200).json(infor);
     } catch (e) {
-        console.error('Error in getExtraInforDoctorById controller:', e);
+        console.error('Error in postBookAppoinment controller:', e);
         return res.status(500).json({
             errCode: -1,
             errMessage: 'Error from the server'
         });
     }
-}
+};
 let postVerifyBookAppoinment = async (req, res) => {
     try {
         console.log('Received query params:', req.query);

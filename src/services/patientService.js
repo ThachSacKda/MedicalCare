@@ -11,17 +11,17 @@ let buildUrlEmail = (doctorId, token) => {
 }
 
 let postBookAppoinment = (data) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             // Kiểm tra các tham số bắt buộc
-            if (!data.email || !data.doctorId || !data.timeType ) {
+            if (!data.email || !data.doctorId || !data.timeType) {
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing parameter'
                 });
             } else {
                 let token = uuidv4();
-                
+
                 // Gửi email đơn giản sau khi nhận được dữ liệu
                 await emailService.sendSimpleEmail({
                     receiverEmail: data.email,
@@ -30,12 +30,11 @@ let postBookAppoinment = (data) => {
                     doctorName: data.doctorName,
                     language: data.language,
                     redirectLink: buildUrlEmail(data.doctorId, token)
-
-                })
+                });
 
                 // Tạo người dùng hoặc tìm người dùng đã tồn tại
                 let user = await db.User.findOrCreate({
-                    where: {email: data.email},
+                    where: { email: data.email },
                     defaults: {
                         email: data.email,
                         roleId: 'R3',
@@ -47,14 +46,15 @@ let postBookAppoinment = (data) => {
 
                 if (user && user[0]) {
                     await db.Booking.findOrCreate({
-                        where: {patientId: user[0].id},
+                        where: { patientId: user[0].id, date: data.date, timeType: data.timeType },
                         defaults: {
                             statusId: 'S1',
                             doctorId: data.doctorId,
                             patientId: user[0].id,
                             date: data.date,
                             timeType: data.timeType,
-                            token: token
+                            token: token,
+                            isBooked: true // Đánh dấu slot thời gian là đã được đặt
                         }
                     });
                 }
@@ -62,14 +62,14 @@ let postBookAppoinment = (data) => {
                 resolve({
                     data: user,
                     errCode: 0,
-                    errMessage: 'Đã lưu thông tin bác sĩ thành công!'
+                    errMessage: 'Đặt lịch thành công!'
                 });
             }
         } catch (e) {
             reject(e);
         }
     });
-}
+};
 
 let postVerifyBookAppoinment = (data) => {
     return new Promise(async(resolve, reject) => {
