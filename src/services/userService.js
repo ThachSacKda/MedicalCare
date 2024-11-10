@@ -74,30 +74,36 @@ let checkUserEmail = (userEmail) => {
     })
 }
 
-let getAllUser = (userId) => {
-    return new Promise(async(resolve, reject) => {
-        try{
+let getAllUser = (userId, roleId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
             let users = '';
-            if(userId === 'All'){
-                users = await db.User.findAll({
-                    attributes: {
-                        exclude: ['password']
-                    }
-                })
-            }if(userId && userId !=='All'){
-                users = await db.User.findOne({
-                    where: { id: userId},
-                    attributes: {
-                        exclude: ['password']
-                    }
-                })
+            let whereCondition = {}; // Điều kiện lọc
+
+            // Chỉ thêm điều kiện `roleId` nếu `roleId` khác 'All'
+            if (roleId && roleId !== 'All') {
+                whereCondition.roleId = roleId;
             }
-            resolve(users)
-        }catch(e){
+
+            if (userId === 'All') {
+                users = await db.User.findAll({
+                    where: whereCondition, // Áp dụng điều kiện lọc role nếu có
+                    attributes: { exclude: ['password'] }
+                });
+            } else if (userId) {
+                users = await db.User.findOne({
+                    where: { id: userId },
+                    attributes: { exclude: ['password'] }
+                });
+            }
+            resolve(users);
+        } catch (e) {
             reject(e);
         }
-    })
-}
+    });
+};
+
+
 
 
 let createNewUser = (data) => {

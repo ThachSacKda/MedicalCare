@@ -23,22 +23,25 @@ let handleLogin = async (req, res) => {
 
 let handleGetAllUsers = async (req, res) => {
     let id = req.query.id;
-    if(!id){
+    let roleId = req.query.roleId; // Lấy roleId từ query
+    
+    if (!id) {
         return res.status(200).json({
             errCode: 1,
             errMessage: 'Missing required parameters',
             users: []
-    
-        })
+        });
     }
-    let users = await userService.getAllUser(id);
+    
+    let users = await userService.getAllUser(id, roleId); // Truyền roleId vào service
+    
     return res.status(200).json({
         errCode: 0,
         errMessage: 'ok',
         users
+    });
+};
 
-    })
-}
 
 let handleCreateNewUser = async (req, res) =>{
     let message = await userService.createNewUser(req.body);
