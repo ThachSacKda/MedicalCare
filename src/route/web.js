@@ -7,6 +7,7 @@ import specialtyController from "../controllers/specialtyController";
 import pharmacyController from "../controllers/pharmacyController"; // Correct import
 import clinicController from "../controllers/clinicController";
 import dashboardController from "../controllers/dashboardController";
+import messagesController from "../controllers/messagesController";
 
 let router = express.Router();
 
@@ -29,7 +30,7 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-user', userController.handleEditUser);
     router.delete('/api/delete-user', userController.handleDeleteUser);
     router.get('/api/allcode', userController.getAllCode);
-    
+
 
     // Doctor routes
     router.get('/api/top-doctor-home', doctorController.getDoctorHome);
@@ -49,7 +50,7 @@ let initWebRoutes = (app) => {
 
     // Specialty routes
     router.post('/api/create-new-specialty', specialtyController.createSpecialty);
-    
+
     router.get('/api/get-specialty', specialtyController.getAllSpecialty);
     router.get('/api/get-detail-specialty-by-id', specialtyController.getDetailSpecialtyById);
 
@@ -76,9 +77,17 @@ let initWebRoutes = (app) => {
     router.get('/api/admin/dashboard/appointments', dashboardController.getAppointmentStatistics);
     router.get('/api/admin/dashboard/weekly-appointments', dashboardController.getWeeklyBookingStatistics);
 
-    router.get('/api/patient/booking-history', patientController.getBookingHistoryByPatientId);    
-
+    router.get('/api/patient/booking-history', patientController.getBookingHistoryByPatientId);
     router.delete('/api/patient/booking', patientController.deleteBooking);
+
+    // API gửi tin nhắn
+    router.post('/api/messages/send', messagesController.handleSendMessage);
+
+    // API lấy tin nhắn giữa hai người dùng
+    router.get('/api/messages/conversation', messagesController.handleGetMessagesBetweenUsers);
+
+    // API lấy tất cả tin nhắn của một người dùng
+    router.get('/api/messages/user', messagesController.handleGetAllMessagesForUser);
 
 
     return app.use("/", router);
