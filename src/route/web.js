@@ -88,6 +88,9 @@ let initWebRoutes = (app) => {
 
     // API lấy tất cả tin nhắn của một người dùng
     router.get('/api/messages/user', messagesController.handleGetAllMessagesForUser);
+    router.get('/api/unread-count', messagesController.handleGetUnreadMessagesCount);
+    router.post('/api/messages/mark-as-read', messagesController.markMessagesAsRead);
+
 
 
     return app.use("/", router);

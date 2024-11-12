@@ -18,13 +18,12 @@ const sendMessage = async (data) => {
     }
 };
 
-// Lấy tin nhắn giữa hai người dùng
 const getMessagesBetweenUsers = async (senderId, receiverId) => {
     try {
         const messages = await db.Message.findAll({
             where: {
                 [db.Sequelize.Op.or]: [
-                    { senderId: senderId, receiverId: receiverId },
+                    { senderId, receiverId },
                     { senderId: receiverId, receiverId: senderId }
                 ]
             },
@@ -57,8 +56,53 @@ const getAllMessagesForUser = async (userId) => {
     }
 };
 
+const getUnreadMessagesCount = async (userId) => {
+    try {
+        const messages = await db.Message.findAll({
+            where: {
+                receiverId: userId,
+                isRead: false
+            },
+            attributes: ['senderId', [db.Sequelize.fn('COUNT', 'senderId'), 'count']],
+            group: ['senderId'],
+            raw: true  // Thêm `raw: true` để nhận kết quả là plain object
+        });
+
+        // Chuyển đổi mảng `messages` thành đối tượng `{ partnerId: count }`
+        const unreadCounts = messages.reduce((acc, message) => {
+            acc[message.senderId] = message.count;  // Truy cập trực tiếp `message.senderId` và `message.count`
+            return acc;
+        }, {});
+
+        return { errCode: 0, unreadCounts };
+    } catch (error) {
+        console.error("Error fetching unread messages count:", error);
+        return { errCode: 1, errMessage: 'Failed to count unread messages.' };
+    }
+};
+
+
+const markMessagesAsRead = async (senderId, receiverId) => {
+    try {
+        await db.Message.update(
+            { isRead: true, readAt: new Date() },
+            {
+                where: {
+                    senderId,
+                    receiverId,
+                    isRead: false
+                }
+            }
+        );
+        return { errCode: 0, message: 'Messages marked as read' };
+    } catch (error) {
+        console.error("Error marking messages as read:", error);
+        return { errCode: 1, message: 'Error marking messages as read' };
+    }
+};
+
 module.exports = {
     sendMessage,
     getMessagesBetweenUsers,
-    getAllMessagesForUser
+    getAllMessagesForUser, getUnreadMessagesCount, markMessagesAsRead
 };
