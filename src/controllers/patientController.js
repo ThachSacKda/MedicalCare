@@ -1,5 +1,5 @@
 import patientService from '../services/patientService'
-const db = require('../models'); // hoặc đường dẫn đến nơi bạn khai báo các model
+const db = require('../models'); 
 
 
 let postBookAppoinment = async (req, res) => {
@@ -18,7 +18,6 @@ let postVerifyBookAppoinment = async (req, res) => {
     try {
         console.log('Received query params:', req.query);
 
-        // Truyền req.query thay vì req.body
         let infor = await patientService.postVerifyBookAppoinment(req.query);
         return res.status(200).json(infor);
     } catch (e) {

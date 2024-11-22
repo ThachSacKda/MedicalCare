@@ -1,8 +1,7 @@
-// controllers/messagesController.js
 
 const messagesService = require('../services/messagesService');
 
-// Gửi tin nhắn mới
+
 const handleSendMessage = async (req, res) => {
     const { senderId, receiverId, messageText } = req.body;
     if (!senderId || !receiverId || !messageText) {
@@ -15,7 +14,6 @@ const handleSendMessage = async (req, res) => {
     return res.status(200).json(response);
 };
 
-// Lấy tin nhắn giữa hai người dùng
 const handleGetMessagesBetweenUsers = async (req, res) => {
     const { senderId, receiverId } = req.query;
     if (!senderId || !receiverId) {
@@ -28,7 +26,6 @@ const handleGetMessagesBetweenUsers = async (req, res) => {
     return res.status(200).json(response);
 };
 
-// Lấy tất cả tin nhắn của một người dùng
 const handleGetAllMessagesForUser = async (req, res) => {
     const { userId } = req.query;
     if (!userId) {

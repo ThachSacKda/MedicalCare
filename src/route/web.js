@@ -80,14 +80,10 @@ let initWebRoutes = (app) => {
     router.get('/api/patient/booking-history', patientController.getBookingHistoryByPatientId);
     router.delete('/api/patient/booking', patientController.deleteBooking);
 
-    // API gửi tin nhắn
     router.post('/api/messages/send', messagesController.handleSendMessage);
-
-    // API lấy tin nhắn giữa hai người dùng
     router.get('/api/messages/conversation', messagesController.handleGetMessagesBetweenUsers);
-
-    // API lấy tất cả tin nhắn của một người dùng
     router.get('/api/messages/user', messagesController.handleGetAllMessagesForUser);
+
     router.get('/api/unread-count', messagesController.handleGetUnreadMessagesCount);
     router.post('/api/messages/mark-as-read', messagesController.markMessagesAsRead);
 

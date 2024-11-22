@@ -1,8 +1,6 @@
-// services/messagesService.js
 
 const db = require('../models'); // Import models từ Sequelize
 
-// Gửi tin nhắn mới
 const sendMessage = async (data) => {
     try {
         const message = await db.Message.create({
@@ -36,7 +34,6 @@ const getMessagesBetweenUsers = async (senderId, receiverId) => {
     }
 };
 
-// Lấy tất cả tin nhắn của một người dùng
 const getAllMessagesForUser = async (userId) => {
     try {
         const messages = await db.Message.findAll({
@@ -65,12 +62,11 @@ const getUnreadMessagesCount = async (userId) => {
             },
             attributes: ['senderId', [db.Sequelize.fn('COUNT', 'senderId'), 'count']],
             group: ['senderId'],
-            raw: true  // Thêm `raw: true` để nhận kết quả là plain object
+            raw: true  
         });
 
-        // Chuyển đổi mảng `messages` thành đối tượng `{ partnerId: count }`
         const unreadCounts = messages.reduce((acc, message) => {
-            acc[message.senderId] = message.count;  // Truy cập trực tiếp `message.senderId` và `message.count`
+            acc[message.senderId] = message.count;  
             return acc;
         }, {});
 

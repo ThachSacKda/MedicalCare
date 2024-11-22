@@ -13,7 +13,6 @@ let buildUrlEmail = (doctorId, token) => {
 let postBookAppoinment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // Kiểm tra các tham số bắt buộc
             if (!data.email || !data.doctorId || !data.timeType) {
                 resolve({
                     errCode: 1,
@@ -21,8 +20,7 @@ let postBookAppoinment = (data) => {
                 });
             } else {
                 let token = uuidv4();
-
-                // Gửi email đơn giản sau khi nhận được dữ liệu
+                // Send mail
                 await emailService.sendSimpleEmail({
                     receiverEmail: data.email,
                     patientName: data.fullName,
@@ -32,7 +30,7 @@ let postBookAppoinment = (data) => {
                     redirectLink: buildUrlEmail(data.doctorId, token)
                 });
 
-                // Tạo người dùng hoặc tìm người dùng đã tồn tại
+                // Create or find user already exits
                 let user = await db.User.findOrCreate({
                     where: { email: data.email },
                     defaults: {
@@ -43,7 +41,6 @@ let postBookAppoinment = (data) => {
                         firstName: data.fullName
                     },
                 });
-
                 if (user && user[0]) {
                     await db.Booking.findOrCreate({
                         where: { patientId: user[0].id, date: data.date, timeType: data.timeType },
@@ -54,16 +51,12 @@ let postBookAppoinment = (data) => {
                             date: data.date,
                             timeType: data.timeType,
                             token: token,
-                            isBooked: true // Đánh dấu slot thời gian là đã được đặt
-                        }
-                    });
-                }
-
+                            isBooked: true 
+                        }});}
                 resolve({
                     data: user,
                     errCode: 0,
-                    errMessage: 'Đặt lịch thành công!'
-                });
+                    errMessage: 'Booking successfully!'});
             }
         } catch (e) {
             reject(e);
